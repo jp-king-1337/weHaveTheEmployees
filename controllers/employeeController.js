@@ -159,7 +159,7 @@ function updateEmployeeRole() {
         connection.query(roleQuery, (err, roles) => {
             handleError(err);
 
-
+            
         })
     })
 }

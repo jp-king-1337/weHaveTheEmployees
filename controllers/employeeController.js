@@ -1,5 +1,5 @@
-const { default: inquirer } = require('inquirer');
-const connection = require('../connection');
+const inquirer = require("inquirer");
+const connection = require("../connection");
 
 // This shows up in every function. Now I can easily call it.
 const handleError = (err) => {
@@ -51,18 +51,18 @@ function addDepartment() {
         .prompt([
             {
                 type: "input",
-                name: "name",
-                message: "Please enter department name:"
+                name: "department",
+                message: "What is the name of the department?"
             },
         ])
         .then((answer) => {
             const query = "INSERT INTO departments (name) VALUES (?)";
-            const values = [answer.name];
+            const values = [answer.department];
 
             connection.query(query, values, (err, res) => {
                 handleError(err);
 
-                console.log("Department added successfully!");
+                console.log(`Added ${answer.department} to the database.`);
                 mainMenu();
             });
         });
@@ -74,9 +74,21 @@ function addRole() {
         .prompt([
             {
                 type: "input",
-                name: "name",
-                message: "Please enter name of role:"
+                name: "role",
+                message: "What is the name of the role?"
             },
+            {
+                type: "input",
+                name: "salary",
+                message: "What is the salary of the role?"
+            },
+            {
+                type: "list",
+                name: "roleDept",
+                choices: [
+                    // Gotta get the departments and display them as choices
+                ]
+            }
         ])
         .then((answer) => {
             const query = "INSERT INTO roles (name) VALUES (?)";
@@ -85,7 +97,7 @@ function addRole() {
             connection.query(query, values, (err, res) => {
                 handleError(err);
 
-                console.log("Role added successfully!");
+                console.log(`Added ${answer.role} to the database.`);
                 mainMenu();
             });
         });
@@ -97,9 +109,28 @@ function addEmployee() {
         .prompt([
             {
                 type: "input",
-                name: "name",
-                message: "Please enter employee name:"
+                name: "firstName",
+                message: "What is the employee's first name?"
             },
+            {
+                type: "input",
+                name: "lastName",
+                message: "What is the employee's last name?"
+            },
+            {
+                type: "list",
+                name: "empRole",
+                choices: [
+                    // Gotta get the roles and display them as choices
+                ]
+            },
+            {
+                type: "list",
+                name: "empManager",
+                choices: [
+                    // Gotta get the managers and display them as choices
+                ]
+            }
         ])
         .then((answer) => {
             const query = "INSERT INTO employees (name) VALUES (?)";
@@ -108,7 +139,7 @@ function addEmployee() {
             connection.query(query, values, (err, res) => {
                 handleError(err);
 
-                console.log("Employee added successfully!");
+                console.log(`Added ${answer.firstName} ${answer.lastName} to the database.`);
                 mainMenu();
             });
         });
@@ -117,5 +148,18 @@ function addEmployee() {
 
 // Update functions
 // Handle updating employee role
+function updateEmployeeRole() {
+    // Get the list of employees and roles from the database
+    const employeeQuery = "SELECT * FROM employees";
+    const roleQuery = "SELECT * FROM roles";
+
+    connection.query(employeeQuery, (err, employees) => {
+        handleError(err);
+
+        connection.query(roleQuery, (err, roles) => {
+            handleError(err);
 
 
+        })
+    })
+}

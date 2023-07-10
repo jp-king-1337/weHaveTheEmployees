@@ -180,7 +180,27 @@ function updateEmployeeRole() {
                         })),
                     },
                 ])
-                .then
-        })
-    })
+                .then((answers) => {
+                    const query = "UPDATE employees SET role_id = ? WHERE id = ?";
+                    const values = [answers.roleId, answers.employeeId];
+
+                    connection.query(query, values, (err, res) => {
+                        handleError(err);
+
+                        console.log(`Updated ${firstName} ${lastName}'s role.`)
+                        mainMenu();
+                    });
+                });
+        });
+    });
 }
+
+module.exports = {
+    viewAllDepartments,
+    viewAllRoles,
+    viewAllEmployees,
+    addDepartment,
+    addRole,
+    addEmployee,
+    updateEmployeeRole
+};

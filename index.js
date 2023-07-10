@@ -1,6 +1,8 @@
-const connection = require('../connection');
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
+
+const connection = require("./connection");
+const employeeController = require("./controllers/employeeController");
 
 // I know I need main menu
 function mainMenu() {
@@ -30,7 +32,7 @@ function mainMenu() {
         .then((answer) => {
             switch (answer.menuOptions) {
                 case "View All Employees":
-                    // Function to handle viewing all employees
+                    employeeController.viewAllDepartments();
                     break;
                 case "Add Employee":
                     // Handle adding employee

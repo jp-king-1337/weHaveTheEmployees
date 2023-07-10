@@ -165,9 +165,42 @@ function updateEmployeeRole() {
                         type: "list",
                         name: "employeeId",
                         message: "Which employee's role do you want to update?",
-                        choices: 
-                    }
+                        choices: employees.map((employee) => ({
+                            name: `${employee.firstName} ${employee.lastName}`,
+                            value: employee.id
+                        })),
+                    },
+                    {
+                        type: "list",
+                        name: "roleId",
+                        message: "Which role do you want to assign the selected employee?",
+                        choices: employees.map((employee) => ({
+                            name: role.title,
+                            value: role.id
+                        })),
+                    },
                 ])
-        })
-    })
+                .then((answers) => {
+                    const query = "UPDATE employees SET role_id = ? WHERE id = ?";
+                    const values = [answers.roleId, answers.employeeId];
+
+                    connection.query(query, values, (err, res) => {
+                        handleError(err);
+
+                        console.log(`Updated ${firstName} ${lastName}'s role.`)
+                        mainMenu();
+                    });
+                });
+        });
+    });
 }
+
+module.exports = {
+    viewAllDepartments,
+    viewAllRoles,
+    viewAllEmployees,
+    addDepartment,
+    addRole,
+    addEmployee,
+    updateEmployeeRole
+};

@@ -86,7 +86,7 @@ function addRole() {
                 type: "list",
                 name: "roleDept",
                 choices: [
-                    // Gotta get the departments and display them as choices
+                    // Gotta get the departments and display them as choices - A MAP!!!
                 ]
             }
         ])
@@ -121,14 +121,14 @@ function addEmployee() {
                 type: "list",
                 name: "empRole",
                 choices: [
-                    // Gotta get the roles and display them as choices
+                    // Gotta get the roles and display them as choices - A MAP!!!
                 ]
             },
             {
                 type: "list",
                 name: "empManager",
                 choices: [
-                    // Gotta get the managers and display them as choices
+                    // Gotta get the managers and display them as choices - A MAP!!!
                 ]
             }
         ])
@@ -159,7 +159,15 @@ function updateEmployeeRole() {
         connection.query(roleQuery, (err, roles) => {
             handleError(err);
 
-            
+            inquirer
+                .prompt([
+                    {
+                        type: "list",
+                        name: "employeeId",
+                        message: "Which employee's role do you want to update?",
+                        choices: 
+                    }
+                ])
         })
     })
 }

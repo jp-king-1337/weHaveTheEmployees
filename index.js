@@ -35,22 +35,22 @@ function mainMenu() {
                     employeeController.viewAllDepartments();
                     break;
                 case "Add Employee":
-                    // Handle adding employee
+                    employeeController.addEmployee();
                     break;
                 case "Update Employee Role":
-                    // Handle updating employee role
+                    employeeController.updateEmployeeRole();
                     break;
                 case "View All Roles":
-                    // Handle viewing all roles
+                    employeeController.viewAllRoles();
                     break;
                 case "Add Role":
-                    // Handle adding a role
+                    employeeController.addRole();
                     break;
                 case "View All Departments":
-                    // Handle viewing all departments
+                    employeeController.viewAllDepartments();
                     break;
                 case "Add Department":
-                    // Handle adding a department
+                    employeeController.addDepartment();
                     break;
                 // BONUSes here
                 case "Quit":

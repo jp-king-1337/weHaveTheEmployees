@@ -1,6 +1,19 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 
+const connection = mysql.createConnection({
+    host: "127.0.0.1",
+    port: 3333,
+    user: "root",
+    password: "",
+    database: "employee_db"
+});
+
+connection.connect((err) => {
+    if (err) throw err;
+    console.log("Connected to the MySQL server.");
+})
+
 // I know I need main menu
 function mainMenu() {
     inquirer
@@ -50,6 +63,10 @@ function mainMenu() {
                     // Handle adding a department
                     break;
                 // BONUSes here
+                case "Quit":
+                    connection.end();
+                    console.log("Disconnected from the MySQL server.");
+                    break;
                 default:
                     break;
             }

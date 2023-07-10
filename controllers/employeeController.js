@@ -175,11 +175,12 @@ function updateEmployeeRole() {
                         name: "roleId",
                         message: "Which role do you want to assign the selected employee?",
                         choices: employees.map((employee) => ({
-                            name: `${employee.firstName} ${employee.lastName}`,
-                            value: employee.id
+                            name: role.title,
+                            value: role.id
                         })),
-                    }
+                    },
                 ])
+                .then
         })
     })
 }

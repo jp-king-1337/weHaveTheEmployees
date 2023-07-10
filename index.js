@@ -8,7 +8,7 @@ function mainMenu() {
         .prompt([
             {
                 type: "list",
-                name: "action",
+                name: "menuOptions",
                 message: "What would you like to do?",
                 choices: [
                     "View All Employees",
@@ -28,7 +28,7 @@ function mainMenu() {
             }
         ])
         .then((answer) => {
-            switch (answer.action) {
+            switch (answer.menuOptions) {
                 case "View All Employees":
                     // Function to handle viewing all employees
                     break;

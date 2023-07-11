@@ -6,7 +6,6 @@ const handleError = (err) => {
     if (err) throw err;
 };
 
-
 // Viewing functions
 // Handle viewing all departments
 function viewAllDepartments() {
@@ -70,86 +69,110 @@ function addDepartment() {
 
 // Handle adding a role
 function addRole() {
-    inquirer
-        .prompt([
-            {
-                type: "input",
-                name: "role",
-                message: "What is the name of the role?"
-            },
-            {
-                type: "input",
-                name: "salary",
-                message: "What is the salary of the role?"
-            },
-            {
-                type: "list",
-                name: "roleDept",
-                choices: [
-                    // Gotta get the departments and display them as choices - A MAP!!!
-                ]
-            }
-        ])
-        .then((answer) => {
-            const query = "INSERT INTO roles (name) VALUES (?)";
-            const values = [answer.name];
+    const departmentQuery = "SELECT * FROM departments";
 
-            connection.query(query, values, (err, res) => {
-                handleError(err);
+    connection.query(departmentQuery, (err, departments) => {
+        handleError(err);
 
-                console.log(`Added ${answer.role} to the database.`);
-                mainMenu();
+        inquirer
+            .prompt([
+                {
+                    type: "input",
+                    name: "role",
+                    message: "What is the name of the role?"
+                },
+                {
+                    type: "input",
+                    name: "salary",
+                    message: "What is the salary of the role?"
+                },
+                {
+                    type: "list",
+                    name: "roleDept",
+                    choices: departments.map((department) => ({
+                        name: department.name,
+                        value: department.id
+                    })),
+                }
+            ])
+            .then((answer) => {
+                const query = "INSERT INTO roles (name, salary, department_id) VALUES (?, ?, ?)";
+                const values = [answer.role, answer.salary, answer.roleDept];
+
+                connection.query(query, values, (err, res) => {
+                    handleError(err);
+
+                    console.log(`Added ${answer.role} to the database.`);
+                    mainMenu();
+                });
+            })
+            .catch((error) => {
+                handleError(error);
             });
-        });
+    });
 }
 
 // Handle adding employee
 function addEmployee() {
-    inquirer
-        .prompt([
-            {
-                type: "input",
-                name: "firstName",
-                message: "What is the employee's first name?"
-            },
-            {
-                type: "input",
-                name: "lastName",
-                message: "What is the employee's last name?"
-            },
-            {
-                type: "list",
-                name: "empRole",
-                choices: [
-                    // Gotta get the roles and display them as choices - A MAP!!!
-                ]
-            },
-            {
-                type: "list",
-                name: "empManager",
-                choices: [
-                    // Gotta get the managers and display them as choices - A MAP!!!
-                ]
-            }
-        ])
-        .then((answer) => {
-            const query = "INSERT INTO employees (name) VALUES (?)";
-            const values = [answer.name];
+    const employeeQuery = "SELECT * FROM employees";
+    const roleQuery = "SELECT * FROM roles";
 
-            connection.query(query, values, (err, res) => {
-                handleError(err);
+    connection.query(employeeQuery, (err, employees) => {
+        handleError(err);
 
-                console.log(`Added ${answer.firstName} ${answer.lastName} to the database.`);
-                mainMenu();
-            });
+        connection.query(roleQuery, (err, roles) => {
+            handleError(err);
+
+            inquirer
+                .prompt([
+                    {
+                        type: "input",
+                        name: "first_name",
+                        message: "What is the employee's first name?"
+                    },
+                    {
+                        type: "input",
+                        name: "last_name",
+                        message: "What is the employee's last name?"
+                    },
+                    {
+                        type: "list",
+                        name: "empRole",
+                        choices: roles.map((role) => ({
+                            name: role.title,
+                            value: role.id
+                        })),
+                    },
+                    {
+                        type: "list",
+                        name: "empManager",
+                        choices: employees.map((employee) => ({
+                            name: `${employee.firstName} ${employee.lastName}`,
+                            value: employee.id
+                        })),
+                    }
+                ])
+                .then((answer) => {
+                    const query = "INSERT INTO employees (name) VALUES (?)";
+                    const values = [answer.name];
+
+                    connection.query(query, values, (err, res) => {
+                        handleError(err);
+
+                        console.log(`Added ${answer.first_name} ${answer.last_name} to the database.`);
+                        mainMenu();
+                    });
+                })
+                .catch((error) => {
+                    handleError(error);
+                });
         });
+    });
 }
-
 
 // Update functions
 // Handle updating employee role
 function updateEmployeeRole() {
-    // Get the list of employees and roles from the database
     const employeeQuery = "SELECT * FROM employees";
     const roleQuery = "SELECT * FROM roles";
 
@@ -174,7 +197,7 @@ function updateEmployeeRole() {
                         type: "list",
                         name: "roleId",
                         message: "Which role do you want to assign the selected employee?",
-                        choices: employees.map((employee) => ({
+                        choices: roles.map((role) => ({
                             name: role.title,
                             value: role.id
                         })),
@@ -187,7 +210,7 @@ function updateEmployeeRole() {
                     connection.query(query, values, (err, res) => {
                         handleError(err);
 
-                        console.log(`Updated ${firstName} ${lastName}'s role.`)
+                        console.log("Updated employee's role.")
                         mainMenu();
                     });
                 });

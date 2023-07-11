@@ -1,12 +1,12 @@
 const inquirer = require("inquirer");
 const connection = require("../connection");
-const { mainMenu } = require("../index");
 
 // This shows up in every function. Now I can easily call it.
 const handleError = (err) => {
     if (err) throw err;
 };
 
+// Function to handle the main menu
 function mainMenu() {
     inquirer
         .prompt([
@@ -22,42 +22,31 @@ function mainMenu() {
                     "Add Role",
                     "View All Departments",
                     "Add Department"
-                    // BONUS:
-                    // "Update Employee Managers",
-                    // "View By Manager",
-                    // "View By Department",
-                    // "Delete Options", // Departments, roles, employees
-                    // "View Budget" // View total utilized budget of a department - the combined salaries of all employees in that department
                 ]
             }
         ])
         .then((answer) => {
             switch (answer.menuOptions) {
                 case "View All Employees":
-                    employeeController.viewAllDepartments();
+                    viewAllEmployees();
                     break;
                 case "Add Employee":
-                    employeeController.addEmployee();
+                    addEmployee();
                     break;
                 case "Update Employee Role":
-                    employeeController.updateEmployeeRole();
+                    updateEmployeeRole();
                     break;
                 case "View All Roles":
-                    employeeController.viewAllRoles();
+                    viewAllRoles();
                     break;
                 case "Add Role":
-                    employeeController.addRole();
+                    addRole();
                     break;
                 case "View All Departments":
-                    employeeController.viewAllDepartments();
+                    viewAllDepartments();
                     break;
                 case "Add Department":
-                    employeeController.addDepartment();
-                    break;
-                // BONUSes here
-                case "Quit":
-                    connection.end();
-                    console.log("Disconnected from the MySQL server.");
+                    addDepartment();
                     break;
                 default:
                     break;

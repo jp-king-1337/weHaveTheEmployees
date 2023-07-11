@@ -73,46 +73,48 @@ function addDepartment() {
 
 // Handle adding a role
 function addRole() {
-    fetchDepartmentsFromDatabase()
-        .then((departments) => {
-            inquirer
-                .prompt([
-                    {
-                        type: "input",
-                        name: "role",
-                        message: "What is the name of the role?"
-                    },
-                    {
-                        type: "input",
-                        name: "salary",
-                        message: "What is the salary of the role?"
-                    },
-                    {
-                        type: "list",
-                        name: "roleDept",
-                        choices: departments.map((department) => ({
-                            name: department.name,
-                            value: department.id
-                        })),
-                    }
-                ])
-                .then((answer) => {
-                    const query = "INSERT INTO roles (name, salary, department_id) VALUES (?, ?, ?)";
-                    const values = [answer.role, answer.salary, answer.roleDept];
+    const departmentQuery = "SELECT * FROM departments";
 
-                    connection.query(query, values, (err, res) => {
-                        handleError(err);
+    connection.query(departmentQuery, (err, departments) => {
+        handleError(err);
 
-                        console.log(`Added ${answer.role} to the database.`);
-                        mainMenu();
-                    });
+        inquirer
+            .prompt([
+                {
+                    type: "input",
+                    name: "role",
+                    message: "What is the name of the role?"
+                },
+                {
+                    type: "input",
+                    name: "salary",
+                    message: "What is the salary of the role?"
+                },
+                {
+                    type: "list",
+                    name: "roleDept",
+                    choices: departments.map((department) => ({
+                        name: department.name,
+                        value: department.id
+                    })),
+                }
+            ])
+            .then((answer) => {
+                const query = "INSERT INTO roles (name, salary, department_id) VALUES (?, ?, ?)";
+                const values = [answer.role, answer.salary, answer.roleDept];
+
+                connection.query(query, values, (err, res) => {
+                    handleError(err);
+
+                    console.log(`Added ${answer.role} to the database.`);
+                    mainMenu();
                 });
-        })
-        .catch((error) => {
-            handleError(error);
-        });
+            })
+            .catch((error) => {
+                handleError(error);
+            });
+    });
 }
-
 
 // Handle adding employee
 function addEmployee() {
@@ -169,7 +171,6 @@ function addEmployee() {
             handleError(error);
         });
 }
-
 
 
 // Update functions

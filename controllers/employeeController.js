@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const connection = require("../connection");
+const { mainMenu } = require("../index");
 
 // This shows up in every function. Now I can easily call it.
 const handleError = (err) => {

@@ -147,14 +147,14 @@ function addEmployee() {
                         type: "list",
                         name: "empManager",
                         choices: employees.map((employee) => ({
-                            name: `${employee.firstName} ${employee.lastName}`,
+                            name: `${employee.first_name} ${employee.last_name}`,
                             value: employee.id
                         })),
                     }
                 ])
                 .then((answer) => {
-                    const query = "INSERT INTO employees (name) VALUES (?)";
-                    const values = [answer.name];
+                    const query = "INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
+                    const values = [answer.first_name, answer.last_name, answer.empRole, answer.empManager];
 
                     connection.query(query, values, (err, res) => {
                         handleError(err);
@@ -189,7 +189,7 @@ function updateEmployeeRole() {
                         name: "employeeId",
                         message: "Which employee's role do you want to update?",
                         choices: employees.map((employee) => ({
-                            name: `${employee.firstName} ${employee.lastName}`,
+                            name: `${employee.first_name} ${employee.last_name}`,
                             value: employee.id
                         })),
                     },

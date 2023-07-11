@@ -21,13 +21,14 @@ function mainMenu() {
                     "View All Roles",
                     "Add Role",
                     "View All Departments",
-                    "Add Department"
+                    "Add Department",
                     // BONUS:
                     // "Update Employee Managers",
                     // "View By Manager",
                     // "View By Department",
                     // "Delete Options", // Departments, roles, employees
                     // "View Budget" // View total utilized budget of a department - the combined salaries of all employees in that department
+                    "Quit"
                 ]
             }
         ])
@@ -70,17 +71,27 @@ function mainMenu() {
 function viewAllDepartments() {
     const query = "SELECT id, name FROM departments";
 
-    connection.query(query, (err, res) => {
+    connection.query(query, (err, departments) => {
         handleError(err);
 
-        console.table(res);
+        console.table(departments);
         mainMenu();
     });
 }
 
 // Handle viewing all roles
 function viewAllRoles() {
-    const query = "SELECT id, title, department_id AS department, salary FROM roles";
+    const query = `
+        SELECT
+            roles.title AS title,
+            roles.id AS role_id,
+            departments.name AS department,
+            roles.salary AS salary
+        FROM
+            roles
+        INNER JOIN
+            departments ON roles.department_id = departments.id
+    `;
 
     connection.query(query, (err, roles) => {
         handleError(err);
@@ -104,7 +115,7 @@ function viewAllEmployees() {
             roles.title AS title,
             departments.name AS department,
             roles.salary,
-            CONCAT(managers.first_name, ' ', managers.last_name) AS manager
+            CONCAT(managers.first_name, " ", managers.last_name) AS manager
         FROM
             employees
         INNER JOIN
@@ -115,10 +126,10 @@ function viewAllEmployees() {
             employees AS managers ON employees.manager_id = managers.id
     `;
 
-    connection.query(query, (err, res) => {
+    connection.query(query, (err, employees) => {
         handleError(err);
 
-        console.table(res);
+        console.table(employees);
         mainMenu();
     });
 }

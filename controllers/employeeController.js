@@ -68,7 +68,7 @@ function mainMenu() {
 // Viewing functions
 // Handle viewing all departments
 function viewAllDepartments() {
-    const query = "SELECT * FROM departments";
+    const query = "SELECT id, name FROM departments";
 
     connection.query(query, (err, res) => {
         handleError(err);
@@ -80,7 +80,7 @@ function viewAllDepartments() {
 
 // Handle viewing all roles
 function viewAllRoles() {
-    const query = "SELECT roles.id, roles.title, departments.name AS department, roles.salary FROM roles INNER JOIN departments ON roles.department_id = departments.id";
+    const query = "SELECT id, title, department_id AS department, salary FROM roles";
 
     connection.query(query, (err, roles) => {
         handleError(err);

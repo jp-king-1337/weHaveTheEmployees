@@ -22,6 +22,12 @@ function mainMenu() {
                     "Add Role",
                     "View All Departments",
                     "Add Department"
+                    // BONUS:
+                    // "Update Employee Managers",
+                    // "View By Manager",
+                    // "View By Department",
+                    // "Delete Options", // Departments, roles, employees
+                    // "View Budget" // View total utilized budget of a department - the combined salaries of all employees in that department
                 ]
             }
         ])
@@ -48,6 +54,7 @@ function mainMenu() {
                 case "Add Department":
                     addDepartment();
                     break;
+                // BONUSes here
                 case "Quit":
                     connection.end();
                     console.log("Disconnected from the MySQL server.");
@@ -73,15 +80,16 @@ function viewAllDepartments() {
 
 // Handle viewing all roles
 function viewAllRoles() {
-    const query = "SELECT * FROM roles";
+    const query = "SELECT roles.id, roles.title, departments.name AS department, roles.salary FROM roles INNER JOIN departments ON roles.department_id = departments.id";
 
-    connection.query(query, (err, res) => {
+    connection.query(query, (err, roles) => {
         handleError(err);
 
-        console.table(res);
+        console.table(roles);
         mainMenu();
     });
 }
+
 
 // Function to handle viewing all employees
 function viewAllEmployees() {
@@ -121,9 +129,9 @@ function addDepartment() {
 
 // Handle adding a role
 function addRole() {
-    const roleQuery = "SELECT * FROM roles";
+    const departmentQuery = "SELECT * FROM departments";
 
-    connection.query(roleQuery, (err, roles) => {
+    connection.query(departmentQuery, (err, departments) => {
         handleError(err);
 
         inquirer
@@ -142,9 +150,9 @@ function addRole() {
                     type: "list",
                     name: "roleDept",
                     message: "Which department does the role belong to?",
-                    choices: roles.map((role) => ({
-                        name: role.name,
-                        value: role.id
+                    choices: departments.map((department) => ({
+                        name: department.name,
+                        value: department.id
                     })),
                 }
             ])

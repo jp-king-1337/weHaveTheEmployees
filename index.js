@@ -8,8 +8,6 @@ const fs = require("fs");
 
 fs.readFile("./db/schema.sql", "utf8", (err, data) => {
     if (err) throw err;
-
-    console.log("Schema executed successfully.");
 });
 
 employeeController.mainMenu();

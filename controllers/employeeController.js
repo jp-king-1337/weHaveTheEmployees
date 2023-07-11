@@ -93,7 +93,27 @@ function viewAllRoles() {
 
 // Function to handle viewing all employees
 function viewAllEmployees() {
-    const query = "SELECT * FROM employees";
+    // ChatGPT says that this is why my table isn't displaying what I want it to.
+    // const query = "SELECT * FROM employees";
+    // ChatGPT's solution:
+    const query = `
+        SELECT
+            employees.id,
+            employees.first_name,
+            employees.last_name,
+            roles.title AS title,
+            departments.name AS department,
+            roles.salary,
+            CONCAT(managers.first_name, ' ', managers.last_name) AS manager
+        FROM
+            employees
+        INNER JOIN
+            roles ON employees.role_id = roles.id
+        INNER JOIN
+            departments ON roles.department_id = departments.id
+        LEFT JOIN
+            employees AS managers ON employees.manager_id = managers.id
+    `;
 
     connection.query(query, (err, res) => {
         handleError(err);

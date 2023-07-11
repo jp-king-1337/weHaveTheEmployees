@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
 const connection = require("../connection");
 
-const { fetchRolesFromDatabase, fetchRolesFromDatabase, fetchManagersFromDatabase } = require("../fetchDatabase");
+const { fetchDepartmentsFromDatabase, fetchRolesFromDatabase, fetchManagersFromDatabase } = require("../fetchDatabase");
 
 
 // This shows up in every function. Now I can easily call it.

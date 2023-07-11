@@ -10,7 +10,6 @@ fs.readFile("./db/schema.sql", "utf8", (err, data) => {
     if (err) throw err;
 
     console.log("Schema executed successfully.");
-    // mainMenu();
 });
 
 function mainMenu() {
@@ -70,11 +69,5 @@ function mainMenu() {
             }
         });
 }
-
-connection.connect((err) => {
-    if (err) throw err;
-    console.log("Connected to the MySQL server.");
-    // mainMenu();
-});
 
 mainMenu();

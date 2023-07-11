@@ -1,10 +1,10 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 
-const connection = require("./connection");
+const connection = require("connection");
 const employeeController = require("./controllers/employeeController");
 
-// I know I need main menu
+
 function mainMenu() {
     inquirer
         .prompt([

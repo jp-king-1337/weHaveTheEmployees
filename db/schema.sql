@@ -1,6 +1,8 @@
 USE employee_db;
 
-
+-- ChatGPT suggested this, which brought an end to the errors I was having with MySQL.
+ALTER TABLE roles DROP FOREIGN KEY roles_ibfk_1;
+ALTER TABLE employees DROP FOREIGN KEY employees_ibfk_1;
 
 -- Not entirely sure I need these. Will test later and see.
 DROP TABLE IF EXISTS departments;
@@ -13,11 +15,10 @@ CREATE TABLE departments (
 );
 
 CREATE TABLE roles (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255),
-    salary DECIMAL,
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL DEFAULT "",
     department_id INT,
-    FOREIGN KEY (department_id) REFERENCES departments(id)
+    salary DECIMAL(10) NOT NULL
 );
 
 CREATE TABLE employees (

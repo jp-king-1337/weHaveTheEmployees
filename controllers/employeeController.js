@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const connection = require("connection");
+const connection = require("../connection");
 
 // This shows up in every function. Now I can easily call it.
 const handleError = (err) => {

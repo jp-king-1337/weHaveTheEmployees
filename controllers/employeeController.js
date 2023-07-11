@@ -48,6 +48,10 @@ function mainMenu() {
                 case "Add Department":
                     addDepartment();
                     break;
+                case "Quit":
+                    connection.end();
+                    console.log("Disconnected from the MySQL server.");
+                    break;
                 default:
                     break;
             }
@@ -117,9 +121,9 @@ function addDepartment() {
 
 // Handle adding a role
 function addRole() {
-    const departmentQuery = "SELECT * FROM departments";
+    const roleQuery = "SELECT * FROM roles";
 
-    connection.query(departmentQuery, (err, departments) => {
+    connection.query(roleQuery, (err, roles) => {
         handleError(err);
 
         inquirer
@@ -137,15 +141,16 @@ function addRole() {
                 {
                     type: "list",
                     name: "roleDept",
-                    choices: departments.map((department) => ({
-                        name: department.name,
-                        value: department.id
+                    message: "Which department does the role belong to?",
+                    choices: roles.map((role) => ({
+                        name: role.name,
+                        value: role.id
                     })),
                 }
             ])
             .then((answer) => {
-                const query = "INSERT INTO roles (name, salary, department_id) VALUES (?, ?, ?)";
-                const values = [answer.role, answer.salary, answer.roleDept];
+                const query = "INSERT INTO roles (title, department_id, salary) VALUES (?, ?, ?)";
+                const values = [answer.role, answer.roleDept, answer.salary];
 
                 connection.query(query, values, (err, res) => {
                     handleError(err);

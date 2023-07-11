@@ -1,6 +1,8 @@
 USE employee_db;
 
-
+-- ChatGPT suggested this, which brought an end to the errors I was having with MySQL.
+ALTER TABLE roles DROP FOREIGN KEY roles_ibfk_1;
+ALTER TABLE employees DROP FOREIGN KEY employees_ibfk_1;
 
 -- Not entirely sure I need these. Will test later and see.
 DROP TABLE IF EXISTS departments;

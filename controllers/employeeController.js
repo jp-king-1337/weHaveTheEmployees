@@ -1,14 +1,10 @@
 const inquirer = require("inquirer");
 const connection = require("../connection");
 
-const { fetchDepartmentsFromDatabase, fetchRolesFromDatabase, fetchManagersFromDatabase } = require("../fetchDatabase");
-
-
 // This shows up in every function. Now I can easily call it.
 const handleError = (err) => {
     if (err) throw err;
 };
-
 
 // Viewing functions
 // Handle viewing all departments
@@ -118,65 +114,65 @@ function addRole() {
 
 // Handle adding employee
 function addEmployee() {
-    fetchRolesFromDatabase()
-        .then((roles) => {
-            fetchManagersFromDatabase()
-                .then((managers) => {
-                    inquirer
-                        .prompt([
-                            {
-                                type: "input",
-                                name: "first_name",
-                                message: "What is the employee's first name?"
-                            },
-                            {
-                                type: "input",
-                                name: "last_name",
-                                message: "What is the employee's last name?"
-                            },
-                            {
-                                type: "list",
-                                name: "empRole",
-                                choices: roles.map((role) => ({
-                                    name: role.title,
-                                    value: role.id
-                                })),
-                            },
-                            {
-                                type: "list",
-                                name: "empManager",
-                                choices: managers.map((manager) => ({
-                                    name: manager.name,
-                                    value: manager.id
-                                })),
-                            }
-                        ])
-                        .then((answer) => {
-                            const query = "INSERT INTO employees (name) VALUES (?)";
-                            const values = [answer.name];
+    const employeeQuery = "SELECT * FROM employees";
+    const roleQuery = "SELECT * FROM roles";
 
-                            connection.query(query, values, (err, res) => {
-                                handleError(err);
+    connection.query(employeeQuery, (err, employees) => {
+        handleError(err);
 
-                                console.log(`Added ${answer.first_name} ${answer.last_name} to the database.`);
-                                mainMenu();
-                            });
-                        });
+        connection.query(roleQuery, (err, roles) => {
+            handleError(err);
+
+            inquirer
+                .prompt([
+                    {
+                        type: "input",
+                        name: "first_name",
+                        message: "What is the employee's first name?"
+                    },
+                    {
+                        type: "input",
+                        name: "last_name",
+                        message: "What is the employee's last name?"
+                    },
+                    {
+                        type: "list",
+                        name: "empRole",
+                        choices: roles.map((role) => ({
+                            name: role.title,
+                            value: role.id
+                        })),
+                    },
+                    {
+                        type: "list",
+                        name: "empManager",
+                        choices: employees.map((employee) => ({
+                            name: `${employee.firstName} ${employee.lastName}`,
+                            value: employee.id
+                        })),
+                    }
+                ])
+                .then((answer) => {
+                    const query = "INSERT INTO employees (name) VALUES (?)";
+                    const values = [answer.name];
+
+                    connection.query(query, values, (err, res) => {
+                        handleError(err);
+
+                        console.log(`Added ${answer.first_name} ${answer.last_name} to the database.`);
+                        mainMenu();
+                    });
                 })
                 .catch((error) => {
                     handleError(error);
                 });
-        })
-        .catch((error) => {
-            handleError(error);
         });
+    });
 }
-
 
 // Update functions
 // Handle updating employee role
 function updateEmployeeRole() {
-    // Get the list of employees and roles from the database
     const employeeQuery = "SELECT * FROM employees";
     const roleQuery = "SELECT * FROM roles";
 
@@ -192,7 +188,7 @@ function updateEmployeeRole() {
                         type: "list",
                         name: "employeeId",
                         message: "Which employee's role do you want to update?",
-                        cchoices: employees.map((employee) => ({
+                        choices: employees.map((employee) => ({
                             name: `${employee.firstName} ${employee.lastName}`,
                             value: employee.id
                         })),

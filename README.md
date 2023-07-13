@@ -5,7 +5,7 @@
 
 This is a content management system. It is a terminal application that can manage a company's employee database by using Node.js, Inquirer, and MySQL2. The user can view and add employees, roles, and departments based on their company's needs. The user can also update an employee's role if needed.
 
-
+![Walkthrough Video](https://drive.google.com/file/d/1FnDW3OsNTCnq5GkWUCszOJLCTz9cDQUm/view?usp=sharing)
 
 
 ## Table of Contents
@@ -18,13 +18,18 @@ This is a content management system. It is a terminal application that can manag
 
 ## Installation
 
-You can clone this github repo with the command line:
+You can clone this GitHub repo with the command line:
 git clone git@github.com:jp-king-1337/weHaveTheEmployees.git
 
 
 ## Usage
 
 This project is to be graded as part of my participation in the Rutgers Coding Bootcamp.
+
+1. Clone the ![GitHub repository](https://github.com/jp-king-1337/weHaveTheEmployees) in your command line interface.
+2. Start the app by typing "npm start" in your CLI and hitting enter.
+3. Navigate with arrow keys to get to whatever function you desire.
+4. Enjoy!
 
 
 ## Credits
